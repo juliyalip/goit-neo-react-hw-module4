@@ -1,0 +1,14 @@
+.list{
+    width: 1250px;
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin:30px auto;
+}
+
+.card{
+    padding: 15px;
+    border: 1px solid #eaeaea;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1), 0 1px 3px rgba(0, 0, 0, 0.06);
+  border-radius: 5px;
+}
