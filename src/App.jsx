@@ -11,6 +11,7 @@ import { getImages } from "./api/service-api";
 function App() {
   const [gallery, setGallery] = useState([]);
   const [page, setPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
   const [query, setQuery] = useState("");
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
@@ -22,7 +23,8 @@ function App() {
     const fetchImages = async () => {
       setLoading(true);
       try {
-        const images = await getImages(query, page);
+        const { data: images, totalPages } = await getImages(query, page);
+        setTotalPages(totalPages);
         setGallery((prevState) =>
           page === 1 ? images : [...prevState, ...images]
         );
@@ -41,6 +43,7 @@ function App() {
     setPage(1);
     setGallery([]);
     setError(null);
+    setTotalPages(0);
   };
 
   const handleSelected = (image) => {
@@ -51,7 +54,8 @@ function App() {
     setPage((prevState) => prevState + 1);
   };
 
-  const isVisibleBtn = gallery.length > 0 && !loading && !error;
+  const isVisibleBtn =
+    gallery.length > 0 && !loading && !error && page < totalPages;
 
   const onClose = (e) => {
     if (e.target !== e.currentTarget) {
@@ -67,9 +71,9 @@ function App() {
       {gallery.length > 0 && (
         <ImageGallery items={gallery} onSelected={handleSelected} />
       )}
-      {selected && <ImageModal {...selected} onClose={onClose}/>}
+      {selected && <ImageModal {...selected} onClose={onClose} />}
       {loading && <Loader />}
-      {isVisibleBtn && <LoadMoreBtn onClick={onLoadMore}  />}
+      {isVisibleBtn && <LoadMoreBtn onClick={onLoadMore} />}
     </>
   );
 }

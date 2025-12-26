@@ -12,5 +12,9 @@ export async function getImages(query, page = 1) {
             client_id: ACCESS_KEY,
         },
     });
-    return data.results;
+
+    return {
+        data: data.results,
+        totalPages: data.total_pages
+    }
 }
